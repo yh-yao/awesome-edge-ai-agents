@@ -1,5 +1,9 @@
 # Awesome Edge AI for Multimodal Agents [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
+<p align="center">
+  <img src="image.png" alt="Awesome Edge AI"/>
+</p>
+
 > A curated list of **papers, frameworks, benchmarks, and applications** for efficient **multimodal agents** (LLMs, text-to-image, speech, world models, etc.) on **mobile and edge devices**.  
 > Focused on **inference engines, optimization, and deployment** for real-world use.
 
