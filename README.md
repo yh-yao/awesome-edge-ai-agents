@@ -29,10 +29,10 @@
 ## 🔹 Introduction
 The next generation of **AI agents** is multimodal — capable of understanding and generating **text, images, speech, video, and embodied interactions**.  
 Running these models on **mobile and edge devices** unlocks:
-- 🌍 **Privacy**: data stays on-device  
-- ⚡ **Low latency**: real-time interaction without cloud roundtrips  
-- 📱 **Accessibility**: AI everywhere, even offline  
-- 🔋 **Efficiency**: tailored for constrained environments  
+- **Privacy**: data stays on-device  
+- **Low latency**: real-time interaction without cloud roundtrips  
+- **Accessibility**: AI everywhere, even offline  
+- **Efficiency**: tailored for constrained environments  
 
 This repo tracks the latest progress in making multimodal AI **efficient, deployable, and agent-ready on edge hardware**.
 
