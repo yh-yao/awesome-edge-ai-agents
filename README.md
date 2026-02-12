@@ -138,12 +138,14 @@ This repo tracks the latest progress in making multimodal AI **efficient, deploy
 | **AR/VR Embodied & GUI Agents** | Voyager, AppAgent, Mobile-Agent | Embodied agents (3D/VR) and GUI agents that operate smartphone apps. | [Voyager](https://arxiv.org/abs/2305.16291) / [AppAgent](https://arxiv.org/abs/2312.13771) / [Mobile-Agent](https://arxiv.org/abs/2401.16158) | [Voyager](https://github.com/MineDojo/Voyager) / [AppAgent](https://github.com/TencentQQGYLab/AppAgent) / [Mobile-Agent](https://github.com/X-PLUG/MobileAgent) |
 | **Edge Creative Tools (Image/Video/Music)** | SnapFusion, MobileDiffusion, LCM/LCM-LoRA, SDXL-Turbo | Distillation/few-step diffusion for on-device image/video; single-step accelerators; practical mobile T2I. | [SnapFusion](https://arxiv.org/abs/2306.00980) / [MobileDiffusion](https://arxiv.org/abs/2311.16567) / [LCM](https://arxiv.org/abs/2310.04378) / [SDXL-Turbo](https://stability.ai/news/stability-ai-sdxl-turbo) | [SnapFusion](https://github.com/snap-research/SnapFusion) / [MobileDiffusion](https://research.google/blog/mobilediffusion-rapid-text-to-image-generation-on-device/) / [LCM](https://github.com/luosiallen/latent-consistency-model) |
 | **Robotics & IoT AI** | RT-2, Octo, OpenVLA, Mobile ALOHA | VLA policies and low-cost teleop datasets enabling general robot skills; efficient fine-tuning/serving. | [RT-2](https://arxiv.org/abs/2307.15818) / [Octo](https://arxiv.org/abs/2405.12213) / [OpenVLA](https://arxiv.org/abs/2406.09246) / [Mobile ALOHA](https://arxiv.org/abs/2401.02117) | [RT-2](https://robotics-transformer2.github.io/) / [OpenVLA](https://github.com/openvla/openvla) / [Mobile ALOHA](https://mobile-aloha.github.io/) |
+| **Always-On AI Assistants** | [OpenClaw](https://github.com/openclaw/openclaw), [ClawBox](https://home-ai-assistant.com) | Self-hosted AI assistant platform on NVIDIA Jetson Orin Nano (67 TOPS, 15W). Multi-agent workflows, browser automation, messaging (Telegram/WhatsApp/Discord). | — | [OpenClaw](https://github.com/openclaw/openclaw) |
 
 
 ---
 
 ## 🌍 Community & Resources
 - [Awesome Edge AI](https://github.com/akshayubhat/awesome-edge-ai) — Related list 
+- [ClawBox Hardware](https://home-ai-assistant.com) — Pre-configured edge AI assistant hardware
 - [MLC AI Community](https://mlc.ai/)  
 - [ONNX Community](https://onnx.ai/)  
 
