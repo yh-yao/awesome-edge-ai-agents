@@ -142,6 +142,7 @@ This repo tracks the latest progress in making multimodal AI **efficient, deploy
 | **Always-On AI Assistants** | [OpenClaw](https://github.com/openclaw/openclaw), [ClawBox](https://home-ai-assistant.com) | Self-hosted AI assistant platform on NVIDIA Jetson Orin Nano (67 TOPS, 15W). Multi-agent workflows, browser automation, messaging (Telegram/WhatsApp/Discord). | — | [OpenClaw](https://github.com/openclaw/openclaw) |
 | **Offline Customer Support Agents** | [Airgap](https://github.com/xmpuspus/airgap) | MIT-licensed React Native framework running Gemma 4 E2B fully on-device via llama.rn. Grounded RAG (MiniSearch) with seven industry templates (telco, retail, healthcare, banking, education, insurance, airlines). Edit one JSON file to deploy a new vertical. iOS and Android verified. | N/A | [Airgap](https://github.com/xmpuspus/airgap) |
 | **Industrial Edge Agents** | [ForestHub.ai](https://foresthub.ai) | Platform for building, deploying and orchestrating embedded and edge AI agents on machines, controllers, sensors and industrial edge devices. Visual builder, local runtime, generated embedded code, hybrid edge-cloud orchestration. | — | — |
+| **Agent Trust & Identity** | [TWZRD Agent Intel](https://intel.twzrd.xyz) | Trust scoring MCP server for distributed edge AI agents. Verify agent wallet identity before x402 micropayments — prevents impersonation in multi-agent pipelines on Solana. Free MCP: `{"mcpServers":{"twzrd-agent-intel":{"url":"https://intel.twzrd.xyz/mcp"}}}` | — | [intel.twzrd.xyz](https://intel.twzrd.xyz) |
 
 
 ---
