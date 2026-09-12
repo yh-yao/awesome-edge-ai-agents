@@ -143,6 +143,7 @@ This repo tracks the latest progress in making multimodal AI **efficient, deploy
 | **Offline Customer Support Agents** | [Airgap](https://github.com/xmpuspus/airgap) | MIT-licensed React Native framework running Gemma 4 E2B fully on-device via llama.rn. Grounded RAG (MiniSearch) with seven industry templates (telco, retail, healthcare, banking, education, insurance, airlines). Edit one JSON file to deploy a new vertical. iOS and Android verified. | N/A | [Airgap](https://github.com/xmpuspus/airgap) |
 | **Industrial Edge Agents** | [ForestHub](https://foresthub.ai) | Edge AI agent platform; its open-source runtime [edge-agents](https://github.com/ForestHubAI/edge-agents) runs AI agents offline on Linux edge devices (Raspberry Pi, Jetson, industrial gateways) with local SLMs alongside cloud LLMs, GPIO/UART/MQTT as first-class nodes, and a visual builder. | — | [edge-agents](https://github.com/ForestHubAI/edge-agents) |
 | **Agent Trust & Identity** | [TWZRD Agent Intel](https://intel.twzrd.xyz) | Trust scoring MCP server for distributed edge AI agents. Verify agent wallet identity before x402 micropayments — prevents impersonation in multi-agent pipelines on Solana. Free MCP: `{"mcpServers":{"twzrd-agent-intel":{"url":"https://intel.twzrd.xyz/mcp"}}}` | — | [intel.twzrd.xyz](https://intel.twzrd.xyz) |
+| **On-device Talking Avatars** | NanoAvatar | Audio-driven avatar video rendered locally on Android with streaming inference and an offline recording demo. | N/A | [NanoAvatar](https://github.com/wpydcr/NanoAvatar) |
 
 
 ---
