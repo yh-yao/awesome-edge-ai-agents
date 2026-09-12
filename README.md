@@ -88,6 +88,7 @@ This repo tracks the latest progress in making multimodal AI **efficient, deploy
 ---
 
 ## ⚙️ Frameworks & Inference Engines
+- [Ivy Tendril](https://github.com/Ivy-Interactive/Ivy-Tendril) - Open-source agentic software factory with an amazing UI that handles parallel Git worktrees for you, complete with programmatic verifications and fast review loops
 - [ONNX Runtime](https://onnxruntime.ai/) — Cross-platform accelerator; hardware backends  
 - [TensorRT](https://developer.nvidia.com/tensorrt) — Compiler + runtime for low-latency inference  
 - [Core ML](https://developer.apple.com/machine-learning/core-ml/) — Apple on-device ML  
