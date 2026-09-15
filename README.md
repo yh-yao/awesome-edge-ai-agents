@@ -5,24 +5,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/sindresorhus/awesome"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="Awesome"></a>
   <img src="https://img.shields.io/badge/focus-on--device%20%7C%20edge%20agents-0ea5e9" alt="Focus">
   <img src="https://img.shields.io/badge/modalities-text%20%7C%20vision%20%7C%20speech%20%7C%20action-8b5cf6" alt="Modalities">
   <img src="https://img.shields.io/badge/updated-2026-22c55e" alt="Updated 2026">
 </p>
 
-> A curated list of **papers, models, runtimes, hardware, benchmarks, and applications** for **multimodal agents** that run on **phones, NPUs, Jetson, wearables, and other edge devices**.
->
-> Scope: **on-device / near-device** inference — not cloud-only agent frameworks.
-
-**Why this list exists.** Cloud agents are powerful, but edge agents are what you can actually ship: private by default, sub-second, offline-capable, and cheap at scale. This repo tracks the stack that makes that possible — from 1-bit LLMs and mobile VLMs to GUI agents, speech pipelines, and NPU runtimes.
-
-| Layer | What to look for |
-| :---- | :--------------- |
-| **Models** | Sub-3B SLMs, mobile VLMs, distilled diffusion, on-device ASR/TTS |
-| **Systems** | KV cache, paging, speculative decode, NPU/GPU/ANE backends |
-| **Agents** | GUI control, tool use, RAG, robotics / VLA, always-on assistants |
-| **Eval** | Latency, energy, memory, success rate on real device UIs |
+> A curated list of **papers, frameworks, benchmarks, and applications** for efficient **multimodal agents** (LLMs, text-to-image, speech, world models, etc.) on **mobile and edge devices**.  
+> Focused on **inference engines, optimization, and deployment** for real-world use.
 
 ---
 
@@ -49,22 +38,21 @@
 
 ## 🔹 Introduction
 
-The next generation of **AI agents** is multimodal — they read screens, hear speech, generate images, and act in apps or the physical world. Running them on **mobile and edge hardware** unlocks:
+The next generation of **AI agents** is multimodal — capable of understanding and generating **text, images, speech, video, and embodied interactions**.  
+Running these models on **mobile and edge devices** unlocks:
 
-- **Privacy** — raw audio, photos, and UI state never leave the device
-- **Latency** — no WAN round-trip; agents can be always-on
-- **Cost** — inference is paid in milliwatts, not tokens
-- **Resilience** — works on airplanes, factories, and air-gapped networks
+- **Privacy**: data stays on-device
+- **Low latency**: real-time interaction without cloud roundtrips
+- **Accessibility**: AI everywhere, even offline
+- **Efficiency**: tailored for constrained environments
 
-Typical edge budget (rule of thumb):
+This repo tracks the latest progress in making multimodal AI **efficient, deployable, and agent-ready on edge hardware**.
 
-| Device class | Memory | Power | What fits today |
-| :----------- | :----- | :---- | :-------------- |
-| MCU / wearable | 1–64 MB | &lt;1 W | Keyword spotting, tiny ASR, 2–3B-unrealistic; use &lt;100M or cloud fallback |
-| Phone / NPU SoC | 6–16 GB | 3–8 W | 1–8B SLM/VLM INT4, real-time ASR, few-step T2I, GUI agents |
-| SBC / Jetson | 8–64 GB | 7–60 W | 7–32B local agents, VLA, multi-agent home/factory hubs |
-
-This list is a map of that stack. Prefer items with **code, on-device numbers, or a real runtime** over cloud-only demos.
+| Device | What fits |
+| :----- | :-------- |
+| Phone / NPU | 1–8B INT4 SLM/VLM, ASR, GUI agents |
+| Jetson / SBC | 7–32B local agents, VLA |
+| MCU / watch | KWS / tiny ASR; LLM on phone or cloud |
 
 ---
 
