@@ -1,0 +1,21 @@
+README.md
+  s_23b05c7706013d::t_7faa7bdb4ab59e 13-14
+  s_23b05c7706013d::t_e823ad3db1f3a8 41-42,44-47,49
+  s_23b05c7706013d::t_fba8b16b8acbd6 51-55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "a6e91680677d8d55d1a22b66f00bb3adfffd7777",
+  "prompts": {},
+  "sessions": {
+    "s_23b05c7706013d": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "18eefcfd-53f0-4c9c-8b69-f373bce9888e",
+        "model": "grok-4.6"
+      },
+      "human_author": "yuhang yao <yuhang.yao@zoom.us>"
+    }
+  }
+}
