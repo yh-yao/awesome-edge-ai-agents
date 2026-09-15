@@ -1,40 +1,70 @@
 # Awesome Edge AI for Multimodal Agents [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 <p align="center">
-  <img src="image.png" alt="Awesome Edge AI"/>
+  <img src="image.png" alt="Awesome Edge AI for Multimodal Agents"/>
 </p>
 
-> A curated list of **papers, frameworks, benchmarks, and applications** for efficient **multimodal agents** (LLMs, text-to-image, speech, world models, etc.) on **mobile and edge devices**.  
-> Focused on **inference engines, optimization, and deployment** for real-world use.
+<p align="center">
+  <a href="https://github.com/sindresorhus/awesome"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="Awesome"></a>
+  <img src="https://img.shields.io/badge/focus-on--device%20%7C%20edge%20agents-0ea5e9" alt="Focus">
+  <img src="https://img.shields.io/badge/modalities-text%20%7C%20vision%20%7C%20speech%20%7C%20action-8b5cf6" alt="Modalities">
+  <img src="https://img.shields.io/badge/updated-2026-22c55e" alt="Updated 2026">
+</p>
+
+> A curated list of **papers, models, runtimes, hardware, benchmarks, and applications** for **multimodal agents** that run on **phones, NPUs, Jetson, wearables, and other edge devices**.
+>
+> Scope: **on-device / near-device** inference — not cloud-only agent frameworks.
+
+**Why this list exists.** Cloud agents are powerful, but edge agents are what you can actually ship: private by default, sub-second, offline-capable, and cheap at scale. This repo tracks the stack that makes that possible — from 1-bit LLMs and mobile VLMs to GUI agents, speech pipelines, and NPU runtimes.
+
+| Layer | What to look for |
+| :---- | :--------------- |
+| **Models** | Sub-3B SLMs, mobile VLMs, distilled diffusion, on-device ASR/TTS |
+| **Systems** | KV cache, paging, speculative decode, NPU/GPU/ANE backends |
+| **Agents** | GUI control, tool use, RAG, robotics / VLA, always-on assistants |
+| **Eval** | Latency, energy, memory, success rate on real device UIs |
 
 ---
 
 ## 📑 Contents
+
 * [Introduction](#-introduction)
 * [Papers](#-papers)
   * [Surveys & Overviews](#surveys--overviews)
   * [LLM Inference on Edge](#llm-inference-on-edge)
   * [Multimodal & Generative Models](#multimodal--generative-models)
+  * [Speech & Audio](#speech--audio)
   * [World Models & Embodied AI](#world-models--embodied-ai)
   * [Agent Systems on Edge](#agent-systems-on-edge)
+* [On-Device Models](#-on-device-models)
 * [Frameworks & Inference Engines](#-frameworks--inference-engines)
+* [Hardware Platforms](#-hardware-platforms)
 * [Optimization Techniques](#-optimization-techniques)
 * [Benchmarks & Datasets](#-benchmarks--datasets)
 * [Applications & Use Cases](#-applications--use-cases)
 * [Community & Resources](#-community--resources)
-* [Concluding Remarks](#concluding-remarks) 
+* [Contributing](#-contributing)
 
 ---
 
 ## 🔹 Introduction
-The next generation of **AI agents** is multimodal — capable of understanding and generating **text, images, speech, video, and embodied interactions**.  
-Running these models on **mobile and edge devices** unlocks:
-- **Privacy**: data stays on-device  
-- **Low latency**: real-time interaction without cloud roundtrips  
-- **Accessibility**: AI everywhere, even offline  
-- **Efficiency**: tailored for constrained environments  
 
-This repo tracks the latest progress in making multimodal AI **efficient, deployable, and agent-ready on edge hardware**.
+The next generation of **AI agents** is multimodal — they read screens, hear speech, generate images, and act in apps or the physical world. Running them on **mobile and edge hardware** unlocks:
+
+- **Privacy** — raw audio, photos, and UI state never leave the device
+- **Latency** — no WAN round-trip; agents can be always-on
+- **Cost** — inference is paid in milliwatts, not tokens
+- **Resilience** — works on airplanes, factories, and air-gapped networks
+
+Typical edge budget (rule of thumb):
+
+| Device class | Memory | Power | What fits today |
+| :----------- | :----- | :---- | :-------------- |
+| MCU / wearable | 1–64 MB | &lt;1 W | Keyword spotting, tiny ASR, 2–3B-unrealistic; use &lt;100M or cloud fallback |
+| Phone / NPU SoC | 6–16 GB | 3–8 W | 1–8B SLM/VLM INT4, real-time ASR, few-step T2I, GUI agents |
+| SBC / Jetson | 8–64 GB | 7–60 W | 7–32B local agents, VLA, multi-agent home/factory hubs |
+
+This list is a map of that stack. Prefer items with **code, on-device numbers, or a real runtime** over cloud-only demos.
 
 ---
 
@@ -43,62 +73,157 @@ This repo tracks the latest progress in making multimodal AI **efficient, deploy
 ### 🔖 Surveys & Overviews
 
 | Title | Venue | Year | Materials | Description |
-|:-----:|:-----:|:----:|:---------:|:-----------|
-| A Comprehensive Survey on On-Device AI Models | ACM Comput. Surveys | 2024 | [Paper](https://dl.acm.org/doi/10.1145/3724420) | Broad on-device overview (models, systems). |
-| Mobile Edge Intelligence for Large Language Models | arXiv | 2024 | [Paper](https://arxiv.org/abs/2407.18921) | Survey of LLMs at mobile edge (latency, offload). |
-| Efficient Diffusion Models: A Survey | arXiv | 2025 | [Paper](https://arxiv.org/abs/2502.06805) | Efficient diffusion (algo & systems) for edge. |
-| Efficient Diffusion Models (IEEE TPAMI) | TPAMI | 2025 | [Paper](https://www.computer.org/csdl/journal/tp/2025/09/11002717/26GmRnP6FFe) | Practice-focused survey incl. deployment. |
+|:------|:-----:|:----:|:---------:|:------------|
+| A Comprehensive Survey on On-Device AI Models | ACM CSUR | 2025 | [Paper](https://dl.acm.org/doi/10.1145/3724420) | Models, systems, and deployment for on-device AI. |
+| Mobile Edge Intelligence for Large Language Models | IEEE COMST | 2025 | [Paper](https://arxiv.org/abs/2407.18921) | LLMs at the mobile edge: latency, offload, serving. |
+| Efficient Multimodal Large Language Models: A Survey | arXiv | 2024 | [Paper](https://arxiv.org/abs/2405.10739) | MLLM compression, vision tokens, and serving. |
+| Efficient Diffusion Models: A Survey | arXiv | 2025 | [Paper](https://arxiv.org/abs/2502.06805) | Algorithm + systems view of fast diffusion. |
+| A Survey of Resource-efficient LLM and Multimodal Foundation Models | arXiv | 2024 | [Paper](https://arxiv.org/abs/2401.08092) | Memory, compute, and energy across the LLM/MLLM stack. |
+| Personal LLM Agents: Insights and Survey | arXiv | 2024 | [Paper](https://arxiv.org/abs/2401.05459) | Capability, efficiency, and security of personal agents. |
 
 ### 🧠 LLM Inference on Edge
 
 | Title | Venue | Year | Materials | Description |
-|:-----:|:-----:|:----:|:---------:|:-----------|
-| LLM as a System Service on Mobile Devices (LLMS) | arXiv | 2024 | [Paper](https://arxiv.org/abs/2403.11805) | KV-cache mgmt., compression & swapping on phones. |
-| Bringing Open LLMs to Consumer Devices (MLC-LLM) | Blog | 2023 | [Post](https://blog.mlc.ai/2023/05/22/bringing-open-large-language-models-to-consumer-devices) | Universal deployment: phones, browsers, Apple/AMD/NVIDIA. |
-| Llama.cpp (GGML) | GitHub | 2023– | [Repo](https://github.com/ggml-org/llama.cpp) | C/C++ local inference across CPUs/NPUs/GPUs. |
-| Large Language Models on Mobile Devices: Measurements & Optimizations | MobiSys | 2024 | [Paper](https://dl.acm.org/doi/10.1145/3662006.3662059) | Empirical study of on-device LLM cost/latency. |
+|:------|:-----:|:----:|:---------:|:------------|
+| LLM as a System Service on Mobile Devices | MobiCom | 2024 | [Paper](https://arxiv.org/abs/2403.11805) | OS-level KV cache, swapping, and multi-app sharing. |
+| Large Language Models on Mobile Devices: Measurements & Optimizations | MobiSys | 2024 | [Paper](https://dl.acm.org/doi/10.1145/3662006.3662059) | Phone-side latency, energy, and thermal study. |
+| PowerInfer-2: Fast Large Language Model Inference on a Smartphone | arXiv | 2024 | [Paper](https://arxiv.org/abs/2412.06607) \| [Code](https://github.com/SJTU-IPADS/PowerInfer) | Neuron-cluster sparsity; 47B model on a phone. |
+| BitNet b1.58 / BitNet.cpp | arXiv | 2024 | [Paper](https://arxiv.org/abs/2402.17764) \| [Code](https://github.com/microsoft/BitNet) | 1.58-bit ternary LLMs; CPU-first edge inference. |
+| Qwen2.5-Omni Technical Report | arXiv | 2025 | [Paper](https://arxiv.org/abs/2503.20215) | Streaming omni model (text/image/audio/video → text+speech). |
+| MobileLLM | CVPR | 2024 | [Paper](https://arxiv.org/abs/2402.14905) \| [Code](https://github.com/facebookresearch/MobileLLM) | Sub-billion LLMs designed for phones, not just distilled. |
+| EdgeMoE | MobiCom | 2024 | [Paper](https://arxiv.org/abs/2308.14352) | Expert-wise paging so MoE models fit in phone DRAM. |
+| Transformer-Lite | arXiv | 2024 | [Paper](https://arxiv.org/abs/2403.20041) | High-efficiency LLM decode on phone GPUs (Qualcomm / MTK). |
+| LLMCad | arXiv | 2023 | [Paper](https://arxiv.org/abs/2309.04255) | On-device speculative collaboration; up to 9.3× faster generation. |
 
 ### 🖼️ Multimodal & Generative Models
 
 | Title | Venue | Year | Materials | Description |
-|:-----:|:-----:|:----:|:---------:|:-----------|
-| MobileCLIP | CVPR | 2024 | [Paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Vasu_MobileCLIP_Fast_Image-Text_Models_through_Multi-Modal_Reinforced_Training_CVPR_2024_paper.pdf) \| [Code](https://github.com/apple/ml-mobileclip) | Image-text models optimized for iPhone latency. |
-| LLaVA-Mini (1 vision token) | arXiv | 2025 | [Paper](https://arxiv.org/abs/2501.03895) | Compresses vision tokens → 1 token for LMMs. |
-| MobileVLM | arXiv | 2023–24 | [Paper](https://arxiv.org/abs/2312.16886) \| [Code](https://github.com/Meituan-AutoML/MobileVLM) | VLM tuned for mobile throughput. |
-| EdgeSAM | arXiv | 2023 | [Paper](https://arxiv.org/abs/2312.06660) \| [Proj](https://mmlab-ntu.github.io/project/edgesam/) | Distilled SAM at 30+ FPS on iPhone 14. |
-| MiniCPM-V (efficient MLLM) | Nat. Commun. | 2025 | [Paper](https://www.nature.com/articles/s41467-025-61040-5) | On-device MLLM progress since 2024 releases. |
+|:------|:-----:|:----:|:---------:|:------------|
+| MobileCLIP / MobileCLIP2 | CVPR | 2024–25 | [Paper](https://arxiv.org/abs/2311.17049) \| [Code](https://github.com/apple/ml-mobileclip) | Fast image–text models; iPhone-class latency. |
+| MiniCPM-V / MiniCPM-o | Nat. Commun. | 2025 | [Paper](https://www.nature.com/articles/s41467-025-61040-5) \| [Code](https://github.com/OpenBMB/MiniCPM-V) | Strong on-device MLLM; GPT-4V-level at phone scale. |
+| InternVL / InternVL2-Mobile | CVPR | 2024 | [Paper](https://arxiv.org/abs/2312.14261) \| [Code](https://github.com/OpenGVLab/InternVL) | Open VLM family with mobile-size checkpoints. |
+| LLaVA-Mini (1 vision token) | arXiv | 2025 | [Paper](https://arxiv.org/abs/2501.03895) | Extreme vision-token compression for LMMs. |
+| MobileVLM / MobileVLM V2 | arXiv | 2024 | [Paper](https://arxiv.org/abs/2312.16886) \| [Code](https://github.com/Meituan-AutoML/MobileVLM) | VLM tuned for mobile throughput. |
+| FastVLM | CVPR | 2025 | [Paper](https://arxiv.org/abs/2412.13303) \| [Code](https://github.com/apple/ml-fastvlm) | Apple hybrid vision encoder; Time-to-First-Token on iPhone. |
+| EdgeSAM | ICCV | 2023 | [Paper](https://arxiv.org/abs/2312.06660) \| [Proj](https://mmlab-ntu.github.io/project/edgesam/) | Distilled SAM at 30+ FPS on iPhone 14. |
+| SnapFusion / MobileDiffusion | ICML / arXiv | 2023–24 | [Paper](https://arxiv.org/abs/2306.00980) | &lt;2s on-device text-to-image. |
+| SDXL-Turbo / LCM | ICLR | 2024 | [Paper](https://arxiv.org/abs/2311.17042) | 1–4 step diffusion; practical mobile T2I backbone. |
+
+### 🔊 Speech & Audio
+
+| Title | Venue | Year | Materials | Description |
+|:------|:-----:|:----:|:---------:|:------------|
+| Whisper / distil-whisper | ICML | 2023–24 | [Paper](https://arxiv.org/abs/2212.04356) \| [Code](https://github.com/openai/whisper) | Robust ASR; distilled variants fit phones. |
+| WhisperKit / whisper.cpp | GitHub | 2024– | [whisper.cpp](https://github.com/ggerganov/whisper.cpp) \| [WhisperKit](https://github.com/argmaxinc/WhisperKit) | On-device ASR on ANE / CPU / GPU. |
+| Moonshine | arXiv | 2024 | [Paper](https://arxiv.org/abs/2410.15608) \| [Code](https://github.com/usefulsensors/moonshine) | Tiny encoder-decoder ASR for edge, not a Whisper clone. |
+| Moshi | arXiv | 2024 | [Paper](https://arxiv.org/abs/2410.00037) \| [Code](https://github.com/kyutai-labs/moshi) | Full-duplex spoken LM; ~200 ms practical latency. |
+| Qwen2-Audio / Qwen2.5-Omni | arXiv | 2024–25 | [Paper](https://arxiv.org/abs/2407.10759) | Open audio-language models used in edge agents. |
+| Piper / Kokoro TTS | GitHub | 2023– | [Piper](https://github.com/rhasspy/piper) \| [Kokoro](https://github.com/hexgrad/kokoro) | Fast local neural TTS for phones and SBCs. |
 
 ### 🌎 World Models & Embodied AI
 
 | Title | Venue | Year | Materials | Description |
-|:-----:|:-----:|:----:|:---------:|:-----------|
-| AndroidWorld: Dynamic Benchmarking for Mobile Agents | arXiv | 2024 | [Paper](https://arxiv.org/abs/2405.14573) \| [Site](https://google-research.github.io/android_world/) | 116 tasks across 20 Android apps; agent eval. |
+|:------|:-----:|:----:|:---------:|:------------|
+| AndroidWorld | NeurIPS | 2024 | [Paper](https://arxiv.org/abs/2405.14573) \| [Code](https://github.com/google-research/android_world) | 116 Android tasks; the default mobile-agent eval. |
+| OSWorld | ICLR | 2025 | [Paper](https://arxiv.org/abs/2404.07972) \| [Site](https://os-world.github.io/) | Real desktop OS tasks for computer-use agents. |
+| OpenVLA | CoRL | 2024 | [Paper](https://arxiv.org/abs/2406.09246) \| [Code](https://github.com/openvla/openvla) | Open vision-language-action policy. |
+| π0 / π0.5 (Physical Intelligence) | arXiv | 2024–25 | [Paper](https://www.physicalintelligence.company/blog/pi0) | Generalist robot VLA; distillation path to edge. |
+| TinyVLA | arXiv | 2024 | [Paper](https://arxiv.org/abs/2409.12514) | Compact VLA for onboard robot compute. |
+| Mobile ALOHA | arXiv | 2024 | [Paper](https://arxiv.org/abs/2401.02117) \| [Site](https://mobile-aloha.github.io/) | Low-cost mobile manipulation + imitation. |
 
 ### 🤖 Agent Systems on Edge
 
-|                                      Title                                      | Venue | Year |                 Materials                 | Description                                                                                                             |
-| :-----------------------------------------------------------------------------: | :---: | :--: | :---------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-|          MobiAgent: Systematic Framework for Customizable Mobile Agents         | arXiv | 2025 | [Paper](https://arxiv.org/abs/2509.00531) | Mobile agent models + acceleration + benchmark suite.                                                                   |
-|               EcoAgent: Edge–Cloud Collaborative Mobile Automation              | arXiv | 2025 | [Paper](https://arxiv.org/abs/2505.05440) | Planner in cloud + execution/observation on-edge.                                                                       |
-|                  LLM as a System Service (OS-level integration)                 | arXiv | 2024 | [Paper](https://arxiv.org/abs/2403.11805) | System support for stateful on-device LLMs.                                                                             |
-|                    Mobile-Agent-v3 / GUI-Owl (GUI automation)                   | arXiv | 2025 | [Paper](https://arxiv.org/abs/2508.15144) | SOTA open models on AndroidWorld/OSWorld.                                                                               |
-| Democratizing Agentic AI with Fast Test-Time Scaling on the Edge (FlashTTS) | arXiv | 2025 | [Paper](https://arxiv.org/abs/2509.00195) | Serving system for efficient test-time scaling on edge; 2.2× higher goodput and 38–68% lower latency vs. vLLM baseline. |
+| Title | Venue | Year | Materials | Description |
+|:------|:-----:|:----:|:---------:|:------------|
+| MobiAgent | arXiv | 2025 | [Paper](https://arxiv.org/abs/2509.00531) | Customizable mobile agents + acceleration + bench. |
+| EcoAgent | arXiv | 2025 | [Paper](https://arxiv.org/abs/2505.05440) | Cloud planner + on-device execution/observation. |
+| Mobile-Agent-v3 / GUI-Owl | arXiv | 2025 | [Paper](https://arxiv.org/abs/2508.15144) | Strong open GUI agents on AndroidWorld / OSWorld. |
+| UI-TARS | arXiv | 2025 | [Paper](https://arxiv.org/abs/2501.12326) \| [Code](https://github.com/bytedance/UI-TARS) | End-to-end GUI agent; native screenshot-to-action. |
+| AppAgent / AppAgent v2 | arXiv | 2024 | [Paper](https://arxiv.org/abs/2312.13771) \| [Code](https://github.com/TencentQQGYLab/AppAgent) | Learn to operate smartphone apps from screenshots. |
+| FlashTTS | arXiv | 2025 | [Paper](https://arxiv.org/abs/2509.00195) | Test-time scaling for agentic LLMs on edge; +2.2× goodput. |
+| AutoDroid / AutoDroid-V2 | MobiCom | 2024–25 | [Paper](https://arxiv.org/abs/2308.15272) | On-device + LLM hybrid Android task automation. |
+| SeeClick / ShowUI | CVPR / arXiv | 2024–25 | [Paper](https://arxiv.org/abs/2401.10935) | Grounded GUI understanding for click agents. |
 
+
+---
+
+## 🧩 On-Device Models
+
+Small models that are actually used as agent backbones on phones, NPUs, and SBCs.
+
+| Model | Size | Modality | Why it matters on edge | Links |
+|:------|:----:|:---------|:-----------------------|:------|
+| **Qwen2.5 / Qwen3** (Instruct) | 0.5B–14B | Text | Default open SLM; strong tool use at 1.5–7B | [Qwen](https://github.com/QwenLM/Qwen2.5) |
+| **Llama 3.2** | 1B / 3B | Text | Meta’s phone-first SLMs; ExecuTorch path | [Llama](https://www.llama.com/) |
+| **Gemma 2 / Gemma 3** | 2B–27B | Text / VLM | Apache-friendly; Gemma 3 has vision at small sizes | [Gemma](https://ai.google.dev/gemma) |
+| **Phi-4-mini / Phi-3.5-mini** | ~3.8B | Text | Dense quality at phone RAM | [Phi](https://huggingface.co/microsoft) |
+| **SmolLM2 / SmolVLM** | 135M–1.7B | Text / VLM | Hugging Face tiny models; browser + phone | [SmolLM](https://github.com/huggingface/smollm) |
+| **MobileLLM** | 125M–1B | Text | Architecture search for phones, not just distill | [Code](https://github.com/facebookresearch/MobileLLM) |
+| **MiniCPM-V / MiniCPM-o** | ~8B (int4 ~5 GB) | V / A / T | Best-in-class on-device MLLM | [Code](https://github.com/OpenBMB/MiniCPM-V) |
+| **FastVLM** | 0.5B–1.5B | VLM | Apple; low TTFT on iPhone | [Code](https://github.com/apple/ml-fastvlm) |
+| **InternVL2-1B/2B/4B** | 1–4B | VLM | Open mobile VLM checkpoints | [Code](https://github.com/OpenGVLab/InternVL) |
+| **BitNet b1.58 2B** | 2B (1.58-bit) | Text | CPU-native ternary inference | [BitNet](https://github.com/microsoft/BitNet) |
+| **Moonshine Tiny/Base** | 27M / 61M | ASR | Edge speech without Whisper-scale decode | [Code](https://github.com/usefulsensors/moonshine) |
+| **Piper / Kokoro** | &lt;100M | TTS | Local voice for agents | [Piper](https://github.com/rhasspy/piper) |
+
+Quantization cheat sheet: **Q4_K_M / AWQ-INT4** is the default phone/Jetson tradeoff. Use **Q8** only if quality is the bottleneck; **1.58-bit / 2-bit** when RAM is the bottleneck.
 
 ---
 
 ## ⚙️ Frameworks & Inference Engines
-- [ONNX Runtime](https://onnxruntime.ai/) — Cross-platform accelerator; hardware backends  
-- [TensorRT](https://developer.nvidia.com/tensorrt) — Compiler + runtime for low-latency inference  
-- [Core ML](https://developer.apple.com/machine-learning/core-ml/) — Apple on-device ML  
-- [LiteRT (TensorFlow Lite)](https://www.tensorflow.org/lite) — Google’s on-device runtime  
-- [MNN](https://github.com/alibaba/MNN) — Alibaba’s lightweight, efficient engine  
-- [llama.cpp](https://github.com/ggerganov/llama.cpp) — Portable C/C++ LLM/VLM inference  
-- [MLC-LLM](https://mlc.ai/mlc-llm/) — TVM-based universal deployment  
+
+### LLM / VLM runtimes
+
+| Engine | Best on | Notes |
+|:-------|:--------|:------|
+| [llama.cpp](https://github.com/ggml-org/llama.cpp) | CPU, Metal, Vulkan, some NPUs | De-facto portable GGUF stack; multimodal via `llava`/`minicpm` |
+| [MLC-LLM](https://llm.mlc.ai/) | iOS, Android, WebGPU, Metal | TVM compile-once, run everywhere |
+| [ExecuTorch](https://pytorch.org/executorch/) | iOS, Android, MCU | PyTorch-native on-device; Llama 3.2 official path |
+| [vLLM](https://github.com/vllm-project/vllm) / [LMDeploy](https://github.com/InternLM/lmdeploy) | Jetson, edge GPU | PagedAttention serving for 7–32B local agents |
+| [SGLang](https://github.com/sgl-project/sglang) | Edge GPU | Fast structured decode / tool-calling servers |
+| [Ollama](https://ollama.com/) | Laptop, SBC | Easiest local agent backend |
+| [MediaPipe LLM Inference](https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference) | Android, Web | Google’s on-device LLM API |
+| [MNN](https://github.com/alibaba/MNN) | Android, iOS | Alibaba lightweight engine + LLM |
+| [NCNN](https://github.com/Tencent/ncnn) | Mobile CPU/GPU | Battle-tested CV/ASR engine |
+| [ONNX Runtime](https://onnxruntime.ai/) / [ORT-GenAI](https://github.com/microsoft/onnxruntime-genai) | Cross-platform | DirectML, CoreML, QNN, TensorRT EPs |
+| [TensorRT / TensorRT-LLM](https://developer.nvidia.com/tensorrt) | NVIDIA dGPU, Jetson | Highest Jetson throughput |
+| [Core ML](https://developer.apple.com/machine-learning/core-ml/) + [mlx](https://github.com/ml-explore/mlx) | Apple ANE / GPU | Native Apple Silicon path |
+| [LiteRT](https://ai.google.dev/edge/litert) (TFLite) | Android NPU, MCU | Google on-device runtime |
+| [QNN](https://www.qualcomm.com/developer/software/qualcomm-ai-engine-direct-sdk) | Snapdragon NPU | Hexagon offload for phones |
+| [OpenVINO](https://docs.openvino.ai/) | Intel NPU/GPU | Laptops, industrial PCs |
+| [llama.rn](https://github.com/mybigday/llama.rn) | React Native | On-device LLM in mobile apps |
+| [whisper.cpp](https://github.com/ggerganov/whisper.cpp) / [WhisperKit](https://github.com/argmaxinc/WhisperKit) | CPU / ANE | Local ASR |
+
+### Agent / app layers
+
+- [OpenClaw](https://github.com/openclaw/openclaw) — Self-hosted multi-agent assistant on Jetson-class boxes
+- [ForestHub edge-agents](https://github.com/ForestHubAI/edge-agents) — Offline agents on Pi / Jetson / industrial gateways (GPIO, UART, MQTT)
+- [Airgap](https://github.com/xmpuspus/airgap) — React Native on-device RAG agents (Gemma + llama.rn)
+- [LangGraph](https://github.com/langchain-ai/langgraph) / [LlamaIndex](https://www.llamaindex.ai/) — Orchestration that can target a local runtime
+- [Dify](https://github.com/langgenius/dify) — Visual agent builder, often paired with Ollama on the LAN
+- [Ivy Tendril](https://github.com/Ivy-Interactive/Ivy-Tendril) — Agentic software factory with parallel Git worktrees (dev-time, not on-device)
 
 ---
 
-- [Ivy Tendril](https://github.com/Ivy-Interactive/Ivy-Tendril) - Open-source agentic software factory with an amazing UI that handles parallel Git worktrees for you, complete with programmatic verifications and fast review loops
+## 🖥️ Hardware Platforms
+
+| Platform | Typical TOPS / RAM | Sweet spot |
+|:---------|:-------------------|:-----------|
+| **Apple A17–M4** (ANE + Metal) | ~35 TOPS ANE / 8–36 GB | Best phone/laptop UX; Core ML + mlx + llama.cpp Metal |
+| **Snapdragon 8 Gen 3 / 8 Elite** | Hexagon NPU | Android agents; QNN + MNN + MediaPipe |
+| **MediaTek Dimensity 9300/9400** | APU | Android NPUs via NeuroPilot / LiteRT |
+| **Google Tensor / Pixel** | TPU + GPU | AICore, Gemini Nano, on-device ASR |
+| **NVIDIA Jetson Orin Nano / NX / AGX** | 40–275 TOPS / 8–64 GB | Home/factory agent hubs, VLA, local vLLM |
+| **Qualcomm Dragonwing / RB3** | Industrial NPU | Robotics, cameras, cars |
+| **Raspberry Pi 5 + Hailo / Coral** | 13–26 TOPS add-on | Cheap always-on vision + SLM offload |
+| **Intel Core Ultra (Meteor/Lunar Lake NPU)** | 10–48 TOPS NPU | PC Copilot+ / OpenVINO agents |
+| **ESP32-S3 / STM32 + NPU MCUs** | mW class | KWS, tiny ASR; cloud or phone for the LLM |
+| **Galaxy Watch / Wear OS** | MB-class | Keyword + tiny binary; LLM in the phone/cloud (see ClawWatch) |
+
+Rule of thumb: **put perception (ASR, CLIP, GUI encoder) on the NPU; keep decode of 1–8B SLMs on GPU/ANE/CPU; reserve cloud for rare hard planning.**
+
+---
+
 ## 🛠️ Optimization Techniques
 
 |                Category                | Methods / Papers                                               | Description                                                                                                                                                                                    |                                                                                                                                   Paper                                                                                                                                  |                                                                                                                        Code                                                                                                                        |
@@ -111,6 +236,8 @@ This repo tracks the latest progress in making multimodal AI **efficient, deploy
 |       **Multimodal Compression**       | ToMe, DynamicViT, LLaVA-Mini                                   | Token merging/pruning for ViTs; dynamic vision token selection; extreme compression (1 vision token vs 576).                                                                                   |                                                                [ToMe](https://arxiv.org/abs/2210.09461) / [DynamicViT](https://arxiv.org/abs/2106.02034) / [LLaVA-Mini](https://arxiv.org/abs/2408.03326)                                                                |                                                                     [ToMe](https://github.com/facebookresearch/ToMe) / [LLaVA-Mini](https://github.com/haotian-liu/LLaVA-Mini)                                                                     |
 |         **Efficient Diffusion**        | Consistency Models, LCM, LCM-LoRA, ADD, SDXL-Turbo, SnapFusion | Few-step or 1-step generation; distillation & adversarial training; mobile-ready pipelines for <2s inference.                                                                                  |       [Consistency Models](https://arxiv.org/abs/2303.01469) / [LCM](https://arxiv.org/abs/2310.04378) / [ADD](https://arxiv.org/abs/2311.16290) / [SDXL-Turbo](https://stability.ai/news/stability-ai-sdxl-turbo) / [SnapFusion](https://arxiv.org/abs/2403.12036)      |                              [LCM](https://github.com/luosiallen/latent-consistency-model) / [SDXL-Turbo](https://github.com/Stability-AI/generative-models) / [SnapFusion](https://github.com/SnapFusion/SnapFusion)                              |
 |    **System-level TTS Optimization**   | FlashTTS                                                   | Fast test-time scaling for agentic LLMs on edge; speculative beam extension, dynamic prefix scheduling, memory-aware model allocation. 2.2× higher goodput, 38–68% latency reduction vs. vLLM. |                                                                                                               [FlashTTS](https://arxiv.org/abs/2509.00195)                                                                                                               |                                                                                                                          –                                                                                                                         |
+|         **On-device split / offload**        | EdgeMoE, Transformer-Lite, EcoAgent, LLMCad                 | Keep perception and decode on-device; page experts; use a tiny draft model; send only hard planning to the cloud.                                                                               |                                                             [EdgeMoE](https://arxiv.org/abs/2308.14352) / [Transformer-Lite](https://arxiv.org/abs/2403.20041) / [LLMCad](https://arxiv.org/abs/2309.04255)                                                             |                                                                                           [PowerInfer](https://github.com/SJTU-IPADS/PowerInfer)                                                                                          |
+|              **1-bit / ternary**             | BitNet b1.58, BitNet.cpp                                    | Ternary weights for CPU-first phones and SBCs when INT4 still does not fit RAM.                                                                                                                |                                                                                                               [BitNet](https://arxiv.org/abs/2402.17764)                                                                                                                |                                                                                             [BitNet.cpp](https://github.com/microsoft/BitNet)                                                                                             |
 
 
 
@@ -118,48 +245,82 @@ This repo tracks the latest progress in making multimodal AI **efficient, deploy
 
 ## 📊 Benchmarks & Datasets
 
-| Benchmark / Dataset         | Category                    | Description                                                                                     | Link |
-|-----------------------------|-----------------------------|-------------------------------------------------------------------------------------------------|------|
-| **MLPerf Tiny**             | Embedded / TinyML           | Industry-standard inference benchmark suite for ultra-low-power embedded devices (microcontrollers); covers tasks like keyword spotting, visual wake words, image classification, anomaly detection. Measures accuracy, latency, and energy. | [MLPerf Tiny](https://mlcommons.org/benchmarks/inference-tiny/) |
-| **AI Benchmark**            | Mobile AI                   | Mobile AI performance suite that scores AI workloads across devices, measuring CPU, GPU, and NPU performance. | [AI Benchmark](https://ai-benchmark.com/) |
-| **AndroidWorld**            | UI Agent / Autonomous       | Dynamic benchmarking environment for autonomous agents controlling Android UIs. Contains 116 programmatically generated tasks across 20 apps; supports reproducible evaluation and robustness testing. | [AndroidWorld (GitHub)](https://github.com/google-research/android_world) |
-| **Geekbench AI**            | Device AI Scoring           | AI-centric workload scoring benchmark that measures CPU, GPU, and NPU performance across a variety of AI tasks. | [Geekbench AI](https://www.geekbench.com/ai/) |
-| **MLPerf Client**           | Client LLM / Desktop        | Client-side benchmarking toolkit for evaluating LLM and AI workloads on desktops, laptops, and similar devices. | [MLPerf – Client benchmarks](https://mlcommons.org/benchmarks/) |
-| **AIoTBench**               | Mobile / Embedded (Legacy)  | Older mobile/embedded benchmark suite evaluating inference speed across mobile frameworks (TensorFlow Lite, Caffe2, PyTorch Mobile). Introduces metrics like VIPS and VOPS. | [AIoTBench (arXiv)](https://arxiv.org/abs/2005.05085) |
+Measure **task success**, not only tokens/s. For agents, log latency, energy, RAM, and thermal throttling on the real device.
 
+| Benchmark | Category | What it actually tests | Link |
+|:----------|:---------|:-----------------------|:-----|
+| **AndroidWorld** | Mobile GUI agent | 116 tasks / 20 Android apps; the default phone-agent eval | [GitHub](https://github.com/google-research/android_world) |
+| **OSWorld** | Desktop computer-use | Real Ubuntu/Windows apps; multi-step GUI | [Site](https://os-world.github.io/) |
+| **AITW / AndroidControl** | Mobile GUI | Large-scale Android action traces | [AITW](https://github.com/google-research/google-research/tree/master/android_in_the_wild) |
+| **ScreenSpot / ScreenSpot-Pro** | GUI grounding | Click the right widget from a screenshot | [ScreenSpot](https://github.com/njucckevin/SeeClick) |
+| **MLPerf Tiny** | MCU / TinyML | KWS, VWW, image clf, anomaly; latency + energy | [MLCommons](https://mlcommons.org/benchmarks/inference-tiny/) |
+| **MLPerf Client / MLPerf Inference** | Client / edge LLM | Laptop and edge-server LLM serving | [MLCommons](https://mlcommons.org/benchmarks/) |
+| **Geekbench AI** | Device scoring | CPU / GPU / NPU AI score across phones and PCs | [Geekbench AI](https://www.geekbench.com/ai/) |
+| **AI Benchmark** | Mobile SoC | Classic mobile NPU/GPU CNN/Transformer suite | [ai-benchmark.com](https://ai-benchmark.com/) |
+| **OpenCompass / MMBench / MMMU** | VLM quality | Use *together with* on-device TTFT and RAM | [OpenCompass](https://github.com/open-compass/opencompass) |
+| **AIoTBench** | Legacy mobile | Older TFLite / Caffe2 / PyTorch Mobile numbers | [arXiv](https://arxiv.org/abs/2005.05085) |
+
+Suggested on-device report template: `model + quant + runtime + SoC → TTFT, tok/s, RAM peak, battery mAh / 1k tokens, thermal after 5 min`.
 
 ---
 
 ## 📱 Applications & Use Cases
 
-| Category | Examples / Papers | Description | Paper | Code |
-| :------: | :---------------- | :----------- | :---- | :--- |
-| **On-device Chat Assistants** | MobileLLM, MobiLlama, EdgeMoE | Sub-billion or sparse LLMs optimized for phones; low memory/latency assistants. | [MobileLLM](https://arxiv.org/abs/2402.14905) / [MobiLlama](https://arxiv.org/abs/2402.16840) / [EdgeMoE](https://arxiv.org/abs/2308.14352) | [MobileLLM](https://github.com/facebookresearch/MobileLLM) / [MobiLlama](https://github.com/mbzuai-oryx/MobiLlama) |
-| **Real-time Speech Translation & Vision** | Whisper, SeamlessM4T, MobileCLIP | On-device ASR + translation; efficient vision-language for realtime apps. | [Whisper](https://arxiv.org/abs/2212.04356) / [SeamlessM4T](https://arxiv.org/abs/2308.11596) / [MobileCLIP](https://arxiv.org/abs/2311.17049) | [Whisper](https://github.com/openai/whisper) |
-| **AR/VR Embodied & GUI Agents** | Voyager, AppAgent, Mobile-Agent | Embodied agents (3D/VR) and GUI agents that operate smartphone apps. | [Voyager](https://arxiv.org/abs/2305.16291) / [AppAgent](https://arxiv.org/abs/2312.13771) / [Mobile-Agent](https://arxiv.org/abs/2401.16158) | [Voyager](https://github.com/MineDojo/Voyager) / [AppAgent](https://github.com/TencentQQGYLab/AppAgent) / [Mobile-Agent](https://github.com/X-PLUG/MobileAgent) |
-| **Edge Creative Tools (Image/Video/Music)** | SnapFusion, MobileDiffusion, LCM/LCM-LoRA, SDXL-Turbo | Distillation/few-step diffusion for on-device image/video; single-step accelerators; practical mobile T2I. | [SnapFusion](https://arxiv.org/abs/2306.00980) / [MobileDiffusion](https://arxiv.org/abs/2311.16567) / [LCM](https://arxiv.org/abs/2310.04378) / [SDXL-Turbo](https://stability.ai/news/stability-ai-sdxl-turbo) | [SnapFusion](https://github.com/snap-research/SnapFusion) / [MobileDiffusion](https://research.google/blog/mobilediffusion-rapid-text-to-image-generation-on-device/) / [LCM](https://github.com/luosiallen/latent-consistency-model) |
-| **Wearable Voice Agents** | ClawWatch (NullClaw + Vosk) | First AI agent running natively on a smartwatch. NullClaw (2.8 MB Zig binary) + Vosk offline STT (68 MB) + cloud LLM on Galaxy Watch; ~71 MB total, ~1 MB RAM. | – | [ClawWatch](https://github.com/ThinkOffApp/ClawWatch) |
-| **Robotics & IoT AI** | RT-2, Octo, OpenVLA, Mobile ALOHA | VLA policies and low-cost teleop datasets enabling general robot skills; efficient fine-tuning/serving. | [RT-2](https://arxiv.org/abs/2307.15818) / [Octo](https://arxiv.org/abs/2405.12213) / [OpenVLA](https://arxiv.org/abs/2406.09246) / [Mobile ALOHA](https://arxiv.org/abs/2401.02117) | [RT-2](https://robotics-transformer2.github.io/) / [OpenVLA](https://github.com/openvla/openvla) / [Mobile ALOHA](https://mobile-aloha.github.io/) |
-| **Always-On AI Assistants** | [OpenClaw](https://github.com/openclaw/openclaw), [ClawBox](https://home-ai-assistant.com) | Self-hosted AI assistant platform on NVIDIA Jetson Orin Nano (67 TOPS, 15W). Multi-agent workflows, browser automation, messaging (Telegram/WhatsApp/Discord). | — | [OpenClaw](https://github.com/openclaw/openclaw) |
-| **Offline Customer Support Agents** | [Airgap](https://github.com/xmpuspus/airgap) | MIT-licensed React Native framework running Gemma 4 E2B fully on-device via llama.rn. Grounded RAG (MiniSearch) with seven industry templates (telco, retail, healthcare, banking, education, insurance, airlines). Edit one JSON file to deploy a new vertical. iOS and Android verified. | N/A | [Airgap](https://github.com/xmpuspus/airgap) |
-| **Industrial Edge Agents** | [ForestHub](https://foresthub.ai) | Edge AI agent platform; its open-source runtime [edge-agents](https://github.com/ForestHubAI/edge-agents) runs AI agents offline on Linux edge devices (Raspberry Pi, Jetson, industrial gateways) with local SLMs alongside cloud LLMs, GPIO/UART/MQTT as first-class nodes, and a visual builder. | — | [edge-agents](https://github.com/ForestHubAI/edge-agents) |
-| **Agent Trust & Identity** | [TWZRD Agent Intel](https://intel.twzrd.xyz) | Trust scoring MCP server for distributed edge AI agents. Verify agent wallet identity before x402 micropayments — prevents impersonation in multi-agent pipelines on Solana. Free MCP: `{"mcpServers":{"twzrd-agent-intel":{"url":"https://intel.twzrd.xyz/mcp"}}}` | — | [intel.twzrd.xyz](https://intel.twzrd.xyz) |
-| **On-device Talking Avatars** | NanoAvatar | Audio-driven avatar video rendered locally on Android with streaming inference and an offline recording demo. | N/A | [NanoAvatar](https://github.com/wpydcr/NanoAvatar) |
+| Category | Examples | Description | Links |
+|:---------|:---------|:------------|:------|
+| **On-device chat** | MobileLLM, Gemma 3, Llama 3.2, Phi-4-mini | Sub-3B / INT4 assistants in the phone process | [MobileLLM](https://github.com/facebookresearch/MobileLLM) · [Gemma](https://ai.google.dev/gemma) |
+| **GUI / computer-use agents** | UI-TARS, AppAgent, Mobile-Agent, AutoDroid | Screenshot → tap/type on Android or desktop | [UI-TARS](https://github.com/bytedance/UI-TARS) · [AppAgent](https://github.com/TencentQQGYLab/AppAgent) · [Mobile-Agent](https://github.com/X-PLUG/MobileAgent) |
+| **Speech agents** | Whisper.cpp, Moonshine, Moshi, Piper | Always-on ASR + local TTS; duplex where RAM allows | [whisper.cpp](https://github.com/ggerganov/whisper.cpp) · [Moshi](https://github.com/kyutai-labs/moshi) · [Piper](https://github.com/rhasspy/piper) |
+| **Wearable voice** | ClawWatch (NullClaw + Vosk) | Native watch agent: 2.8 MB Zig binary + 68 MB offline STT; ~1 MB RAM | [ClawWatch](https://github.com/ThinkOffApp/ClawWatch) |
+| **Home / always-on hubs** | OpenClaw, ClawBox | Jetson Orin Nano box: multi-agent, browser, Telegram/WhatsApp | [OpenClaw](https://github.com/openclaw/openclaw) · [ClawBox](https://home-ai-assistant.com) |
+| **Offline support / RAG** | Airgap | React Native + llama.rn; on-device Gemma + MiniSearch RAG | [Airgap](https://github.com/xmpuspus/airgap) |
+| **Industrial / IoT** | ForestHub edge-agents | Pi / Jetson / gateways; GPIO, UART, MQTT as first-class nodes | [edge-agents](https://github.com/ForestHubAI/edge-agents) |
+| **Robotics / VLA** | OpenVLA, TinyVLA, Mobile ALOHA, π0 | Onboard policies; distill giants down to Jetson-class | [OpenVLA](https://github.com/openvla/openvla) · [TinyVLA](https://tiny-vla.github.io/) · [Mobile ALOHA](https://mobile-aloha.github.io/) |
+| **On-device T2I / avatars** | SnapFusion, MobileDiffusion, LCM, NanoAvatar | Few-step image gen; Android talking-head demo | [LCM](https://github.com/luosiallen/latent-consistency-model) · [NanoAvatar](https://github.com/wpydcr/NanoAvatar) |
+| **Privacy / air-gap** | llama.cpp + local RAG | Factories, hospitals, airplanes — no token leaves the LAN | [llama.cpp](https://github.com/ggml-org/llama.cpp) |
+| **Agent identity (experimental)** | TWZRD Agent Intel | MCP trust scoring before agent-to-agent payments | [intel.twzrd.xyz](https://intel.twzrd.xyz) |
 
+### Starter stacks (copy-paste)
+
+| Goal | Stack |
+|:-----|:------|
+| **iPhone chat + vision** | FastVLM or MiniCPM-V → Core ML / MLC-LLM / mlx |
+| **Android GUI agent** | UI-TARS or Mobile-Agent-v3 + MediaPipe / MNN INT4 |
+| **Jetson home agent** | Qwen2.5-7B-Instruct AWQ + vLLM or llama.cpp CUDA + Piper |
+| **Pi always-on sensor agent** | Hailo/Coral for vision + 1–3B GGUF on CPU + MQTT tools |
+| **Watch / MCU** | Keyword spotting locally; LLM on the paired phone |
 
 ---
 
 ## 🌍 Community & Resources
-- [Awesome Edge AI](https://github.com/akshayubhat/awesome-edge-ai) — Related list 
-- [ClawBox Hardware](https://home-ai-assistant.com) — Pre-configured edge AI assistant hardware
-- [MLC AI Community](https://mlc.ai/)  
-- [ONNX Community](https://onnx.ai/)  
+
+**Lists & docs**
+- [Awesome Edge AI](https://github.com/akshayubhat/awesome-edge-ai) — broader edge-AI list
+- [Awesome On-Device LLM](https://github.com/NiuTrans/On-Device-LLMs) — on-device LLM papers
+- [MLC AI](https://mlc.ai/) · [ONNX](https://onnx.ai/) · [ExecuTorch](https://pytorch.org/executorch/)
+- [Google AI Edge](https://ai.google.dev/edge) — LiteRT, MediaPipe, on-device Gemini Nano
+- [Apple Machine Learning Research](https://machinelearning.apple.com/) — FastVLM, MobileCLIP, mlx
+
+**Hardware & products**
+- [ClawBox](https://home-ai-assistant.com) — pre-configured Jetson assistant
+- [NVIDIA Jetson](https://developer.nvidia.com/embedded-computing) · [Qualcomm AI Hub](https://aihub.qualcomm.com/)
+
+**Where to watch**
+- Venues: MobiCom, MobiSys, ASPLOS, MLSys, NeurIPS, CVPR, CoRL
+- Hugging Face collections tagged `on-device`, `gguf`, `executorch`
 
 ---
-
 
 ## 🤝 Contributing
-Pull requests are welcome! Please follow the [Awesome List Guidelines](https://github.com/sindresorhus/awesome/blob/main/contributing.md).  
+
+PRs welcome. Follow the [Awesome List Guidelines](https://github.com/sindresorhus/awesome/blob/main/contributing.md).
+
+**In scope:** on-device / near-device multimodal models, runtimes, hardware, agents, and evals with a link (paper, code, or product).
+
+**Out of scope:** cloud-only agent frameworks with no edge path; closed demos with no numbers.
+
+Please include: one-line description, year, hardware class (phone / NPU / Jetson / MCU), and a working URL.
 
 ---
-⭐️ Inspired by the vision of **efficient multimodal agents everywhere** — from phones to IoT to autonomous systems.
+
+⭐️ Inspired by the vision of **efficient multimodal agents everywhere** — from watches and phones to factory gateways and robots.
