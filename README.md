@@ -269,6 +269,7 @@ Suggested on-device report template: `model + quant + runtime + SoC → TTFT, to
 | **Privacy / air-gap** | llama.cpp + local RAG | Factories, hospitals, airplanes — no token leaves the LAN | [llama.cpp](https://github.com/ggml-org/llama.cpp) |
 | **Agent identity (experimental)** | TWZRD Agent Intel | MCP trust scoring before agent-to-agent payments | [intel.twzrd.xyz](https://intel.twzrd.xyz) |
 | **Reflex decision workspace** | answerr | In-browser & edge dual-process AI: sub-1ms reflex routing before slow LLMs | [answerr](https://github.com/pCwOrM/answerr) · [answerr.me](https://answerr.me) |
+| **In-browser ASR** | Audio to Text (Whisper in the browser) | Speech recognition runs entirely inside the browser tab on the visitor's device; no upload and no account, with TXT and SRT export | [Audio to Text](https://www.ruanjiange.com/audio-to-text/) |
 
 ### Starter stacks (copy-paste)
 
