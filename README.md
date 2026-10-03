@@ -153,6 +153,7 @@ Small models that are actually used as agent backbones on phones, NPUs, and SBCs
 | **BitNet b1.58 2B** | 2B (1.58-bit) | Text | CPU-native ternary inference | [BitNet](https://github.com/microsoft/BitNet) |
 | **Moonshine Tiny/Base** | 27M / 61M | ASR | Edge speech without Whisper-scale decode | [Code](https://github.com/usefulsensors/moonshine) |
 | **Piper / Kokoro** | &lt;100M | TTS | Local voice for agents | [Piper](https://github.com/rhasspy/piper) |
+| **SimThink D** | 265,665 params | Text → action | Picks one action in about 2 ms on one desktop CPU core; trains on a CPU; works as a local fallback when a cloud answer is late | [Code](https://github.com/MSSJ-AI-ORG/simthinkd) \| [Paper](https://doi.org/10.5281/zenodo.23111659) |
 
 Quantization cheat sheet: **Q4_K_M / AWQ-INT4** is the default phone/Jetson tradeoff. Use **Q8** only if quality is the bottleneck; **1.58-bit / 2-bit** when RAM is the bottleneck.
 
