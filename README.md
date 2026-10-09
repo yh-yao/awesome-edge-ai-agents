@@ -192,6 +192,7 @@ Quantization cheat sheet: **Q4_K_M / AWQ-INT4** is the default phone/Jetson trad
 - [Dify](https://github.com/langgenius/dify) — Visual agent builder, often paired with Ollama on the LAN
 - [Ivy Tendril](https://github.com/Ivy-Interactive/Ivy-Tendril) — Agentic software factory with parallel Git worktrees (dev-time, not on-device)
 - [WERR](https://github.com/pCwOrM/werr) - **2026 · Edge/MCU** - Zero-memory, sub-2ms machine-native System-1 reflex decision engine using 24-byte fractal coordinate seeds for air-gapped edge agents. ([Paper](https://doi.org/10.5281/zenodo.22867426))
+- [WerreduR](https://github.com/jesmaat/WerreduR) — **2026 · Edge/MCU** — Procedural Fractal Cognitive Reflex Engine & 24-byte zero-storage difficulty controller for adaptive educational AI on edge devices (30.4 μs decision latency, Lean 4 verified). ([Paper](https://doi.org/10.5281/zenodo.23128224))
 
 ---
 
