@@ -250,6 +250,7 @@ Measure **task success**, not only tokens/s. For agents, log latency, energy, RA
 | **AI Benchmark** | Mobile SoC | Classic mobile NPU/GPU CNN/Transformer suite | [ai-benchmark.com](https://ai-benchmark.com/) |
 | **OpenCompass / MMBench / MMMU** | VLM quality | Use *together with* on-device TTFT and RAM | [OpenCompass](https://github.com/open-compass/opencompass) |
 | **AIoTBench** | Legacy mobile | Older TFLite / Caffe2 / PyTorch Mobile numbers | [arXiv](https://arxiv.org/abs/2005.05085) |
+| **EC²-Bench** | Edge-cloud agent | 128 executable OpenClaw workspace tasks; an edge model (Qwen3.5 2B–27B) collaborates with a cloud model via 4 strategies, scored on completion, cloud tokens/cost, edge FLOPs and privacy exposure | [GitHub](https://github.com/OpenBMB/EC2-Bench) |
 
 Suggested on-device report template: `model + quant + runtime + SoC → TTFT, tok/s, RAM peak, battery mAh / 1k tokens, thermal after 5 min`.
 
