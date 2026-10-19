@@ -273,6 +273,7 @@ Suggested on-device report template: `model + quant + runtime + SoC → TTFT, to
 | **Agent identity (experimental)** | TWZRD Agent Intel | MCP trust scoring before agent-to-agent payments | [intel.twzrd.xyz](https://intel.twzrd.xyz) |
 | **Reflex decision workspace** | answerr | In-browser & edge dual-process AI: sub-1ms reflex routing before slow LLMs | [answerr](https://github.com/pCwOrM/answerr) · [answerr.me](https://answerr.me) |
 | **In-browser ASR** | Audio to Text (Whisper in the browser) | Speech recognition runs entirely inside the browser tab on the visitor's device; no upload and no account, with TXT and SRT export | [Audio to Text](https://www.ruanjiange.com/audio-to-text/) |
+| **E-reader chat** | Inkwell (Quill) | SmolLM2 135M GGUF through llama.cpp on a jailbroken Kindle Paperwhite 3 (Cortex-A9, 512 MB RAM) at about 1.7 tokens per second, fully offline | [Inkwell](https://github.com/pragyaangaur/Inkwell) |
 
 ### Starter stacks (copy-paste)
 
