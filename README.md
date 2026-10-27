@@ -182,6 +182,7 @@ Quantization cheat sheet: **Q4_K_M / AWQ-INT4** is the default phone/Jetson trad
 | [OpenVINO](https://docs.openvino.ai/) | Intel NPU/GPU | Laptops, industrial PCs |
 | [llama.rn](https://github.com/mybigday/llama.rn) | React Native | On-device LLM in mobile apps |
 | [whisper.cpp](https://github.com/ggerganov/whisper.cpp) / [WhisperKit](https://github.com/argmaxinc/WhisperKit) | CPU / ANE | Local ASR |
+| [Desert Ant Labs](https://desertant.com/) | iOS, Android, Web | Task models for speech, PII redaction and moderation behind one SDK for Swift, Kotlin and JS (2026, phone). Source-available, not OSI |
 
 ### Agent / app layers
 
