@@ -182,7 +182,6 @@ Quantization cheat sheet: **Q4_K_M / AWQ-INT4** is the default phone/Jetson trad
 | [OpenVINO](https://docs.openvino.ai/) | Intel NPU/GPU | Laptops, industrial PCs |
 | [llama.rn](https://github.com/mybigday/llama.rn) | React Native | On-device LLM in mobile apps |
 | [whisper.cpp](https://github.com/ggerganov/whisper.cpp) / [WhisperKit](https://github.com/argmaxinc/WhisperKit) | CPU / ANE | Local ASR |
-| [Desert Ant Labs](https://desertant.com/) | iOS, Android, Web | Task models for speech, PII redaction and moderation behind one SDK for Swift, Kotlin and JS (2026, phone). Source-available, not OSI |
 
 ### Agent / app layers
 
@@ -194,6 +193,7 @@ Quantization cheat sheet: **Q4_K_M / AWQ-INT4** is the default phone/Jetson trad
 - [Ivy Tendril](https://github.com/Ivy-Interactive/Ivy-Tendril) — Agentic software factory with parallel Git worktrees (dev-time, not on-device)
 - [WERR](https://github.com/pCwOrM/werr) - **2026 · Edge/MCU** - Zero-memory, sub-2ms machine-native System-1 reflex decision engine using 24-byte fractal coordinate seeds for air-gapped edge agents. ([Paper](https://doi.org/10.5281/zenodo.22867426))
 - [WerreduR](https://github.com/jesmaat/WerreduR) — **2026 · Edge/MCU** — Procedural Fractal Cognitive Reflex Engine & 24-byte zero-storage difficulty controller for adaptive educational AI on edge devices (30.4 μs decision latency, Lean 4 verified). ([Paper](https://doi.org/10.5281/zenodo.23128224))
+- [Desert Ant Labs](https://desertant.com/) - **2026 · Phone / Web** - On-device task models for speech recognition, PII redaction, moderation and language ID behind one SDK for Swift, Kotlin and JS. Source-available, not OSI
 
 ---
 
